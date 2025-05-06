@@ -18,12 +18,12 @@ const Livros = () => {
     let valida = confirm(`Você realmente deseja remover o livro de ID: ${livroId}`);
     if(valida){
       await LivrosService.deleteLivro(livroId)
-      .then(({data}) => {
-        alert(data.mensagem)
+      .then(() => {
+        alert("Livro removido com sucesso!");
         getLivros()
       })
       .catch(({response:{data,status}})=>{
-        alert(`${status} - ${data.mensagem}`)      
+        alert(`${status} - ${data.error || "Erro desconhecido"}`)      
       });
     }
   }
