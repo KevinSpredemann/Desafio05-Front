@@ -28,6 +28,7 @@ const LivrosEdicao = () => {
 
     if (!livro.titulo || livro.titulo.trim() === "") {
       setError("O título é obrigatório!");
+      return;
     }
     if (
       !livro.num_paginas ||
@@ -40,9 +41,17 @@ const LivrosEdicao = () => {
 
     if (!livro.isbn || livro.isbn.trim() === "") {
       setError("O ISBN é obrigatório!");
+      return;
     }
+
+    if (livro.isbn.length !== 13 || !/^\d+$/.test(livro.isbn)) {
+      setError("O ISBN deve conter exatamente 13 dígitos numéricos!");
+      return;
+    }
+
     if (!livro.editora || livro.editora.trim() === "") {
       setError("A editora é obrigatória!");
+      return;
     }
 
     const body = {
@@ -55,7 +64,7 @@ const LivrosEdicao = () => {
     try {
       await LivrosService.updateLivro(Number(livro.id), body);
       alert("Livro editado com sucesso!");
-      setLivro({ ...body });
+      setLivro({ id: livro.id , ...body });
       setError("");
     } catch (error) {
       setError(
@@ -84,7 +93,7 @@ const LivrosEdicao = () => {
                 type="text"
                 disabled
                 required
-                value={livro.id || ""}
+                value={livro.id}
                 onChange={(event) => {
                   setLivro({ ...livro, id: event.target.value });
                 }}
@@ -117,9 +126,8 @@ const LivrosEdicao = () => {
               <input
                 type="text"
                 required
-                pattern="\d{13}"
                 placeholder="Ex: 9788532530780"
-                value={livro.isbn}
+                value={livro.isbn || ""}
                 onChange={(event) => {
                   setLivro({ ...livro, isbn: event.target.value });
                 }}

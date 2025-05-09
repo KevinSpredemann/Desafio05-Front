@@ -33,6 +33,11 @@ const LivrosCadastro = () => {
       return;
     }
 
+    if (livro.isbn.length !== 13 || !/^\d+$/.test(livro.isbn)) {
+      setError("O ISBN deve conter exatamente 13 dígitos numéricos!");
+      return;
+    }
+
     if (!livro.editora || livro.editora.trim() === "") {
       setError("A editora é obrigatória!");
       return;
@@ -90,7 +95,6 @@ const LivrosCadastro = () => {
               <input
                 type="text"
                 required
-                pattern="\d{13}"
                 placeholder="Ex: 9788532530780"
                 value={livro.isbn}
                 onChange={(event) =>
